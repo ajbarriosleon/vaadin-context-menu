@@ -22,22 +22,17 @@
       }
 
       :host(:not([desktop])) {
-        display: flex;
-        justify-content: center;
         width: 100vw;
-        padding: 0px 20px;
-
-        bottom: 20px;
+        margin: 20px;
+        bottom: 0;
         transform: none !important;
-        top: auto !important;
+        top: auto;
       }
 
       :host(:not([desktop])) ::content .dropdown-content {
         display: flex;
         justify-content: center;
-
         width: 100%;
-        max-width: 400px;
       }
     </style>
     <content></content>
