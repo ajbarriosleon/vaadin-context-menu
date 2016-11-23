@@ -9,6 +9,8 @@
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="../../vaadin-grid/vaadin-grid.html">
+  <link rel="import" href="../../paper-slider/paper-slider.html">
+  <link rel="import" href="../../paper-button/paper-button.html">
   <link rel="import" href="common.html">
 </head>
 
@@ -31,22 +33,8 @@
         <grid-example></grid-example>
         <dom-module id="grid-example">
           <style>
-            :host {
-              --vaadin-context-menu-overlay: {
-                box-shadow: none;
-                border: 1px solid var(--primary-color);
-                width: 110px;
-                padding: 0;
-              };
-              --paper-menu-selected-item: {
-                font-weight: normal;
-              };
-              --paper-item: {
-                min-height: 24px;
-                padding: 0 10px;
-                cursor: default;
-              }
-              --paper-menu-background-color: #e1f3fc;
+            paper-item {
+              cursor: pointer;
             }
 
             paper-item::before {
@@ -54,25 +42,27 @@
               content: "✔" !important;
               margin-right: 10px;
               background: transparent !important;
-              opacity: 0 !important;
+              visibility: hidden;
+              opacity: 0.8 !important;
             }
             paper-item.iron-selected::before {
-              opacity: 0.8 !important;
+              visibility: visible;
             }
           </style>
           <template>
-            <vaadin-grid id="grid" frozen-columns="1" items="[[_items()]]" columns="{{columns}}">
-              <table>
-                <colgroup>
-                  <col name="name" resizable>
-                  <col name="surname" resizable>
-                  <col name="activity">
-                  <col name="target">
-                  <col name="effort">
-                </colgroup>
-              </table>
-            </vaadin-grid>
-            <vaadin-context-menu id="menu" close-on="">
+
+            <vaadin-context-menu id="menu">
+              <vaadin-grid id="grid" frozen-columns="1" items="[[_items()]]" columns="{{columns}}">
+                <table>
+                  <colgroup>
+                    <col name="name" resizable>
+                    <col name="surname" resizable>
+                    <col name="activity">
+                    <col name="target">
+                    <col name="effort">
+                  </colgroup>
+                </table>
+              </vaadin-grid>
               <template>
                 <paper-menu multi selected-values="{{selectedValues}}">
                   <paper-item>Name</paper-item>
@@ -115,6 +105,48 @@
 
       </template>
 
+    </demo-snippet>
+
+    <demo-snippet>
+      <template>
+        <template is="dom-bind" id="second">
+          <vaadin-context-menu selector="#opener" open-on="click" id="contextmenu" close-on="">
+            <template>
+              <style>
+                div[role="menu"] {
+                  padding: 26px 15px;
+                  background: #fff;
+                }
+
+                paper-slider {
+                  width: 100% !important;
+                  min-width: 200px;
+                }
+              </style>
+              <div role="menu">
+                <paper-slider min="0" max="100" value="{{_value}}" pin></paper-slider>
+                <paper-button raised on-tap="_okClick">Ok</paper-button>
+              </div>
+            </template>
+            <button id="opener">Change value</button>
+
+            <b>Current value:&nbsp;</b>[[_displayValue]]
+
+          </vaadin-context-menu>
+        </template>
+
+        <script>
+        var tpl = document.querySelector('template#second');
+        tpl._okClick = function() {
+          tpl._displayValue = tpl._value;
+          tpl.$.contextmenu.close();
+        };
+        tpl._value = 0;
+        tpl._displayValue = 0;
+
+        </script>
+
+      </template>
     </demo-snippet>
 
   </div>
